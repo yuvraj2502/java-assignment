@@ -37,13 +37,13 @@ public class ProductDaoImpl implements ProductDao {
 	@Override
 	public boolean updateProductInfo(Product updatedProduct) throws SQLException {
 		Connection con = DBConnection.dbConnect();
-		String sql = "update products set productname=?,description=?,price=?";
+		String sql = "update products set productname=?,description=?,price=? where productId=?";
 		PreparedStatement pstmt = con.prepareStatement(sql);
-
+		
 		pstmt.setString(1, updatedProduct.getProductName());
 		pstmt.setString(2, updatedProduct.getDescription());
 		pstmt.setDouble(3, updatedProduct.getPrice());
-
+		pstmt.setInt(4, updatedProduct.getProductId());
 		boolean status = (pstmt.executeUpdate() == 1) ? true : false;
 
 		DBConnection.dbClose();
