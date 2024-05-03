@@ -94,17 +94,20 @@ public class MainController {
 				}
 
 				case 3: {
-					sc.nextLine();
+					
 					Customer c = new Customer();
 					int customerId = 1;
 
 					c.setCustomerId(customerId);
+					
 					System.out.print("Enter first name : ");
-					c.setFirstName(sc.next().trim());
+					c.setFirstName(sc.next());
 					System.out.print("Enter last name : ");
-					c.setLastName(sc.next().trim());
+					c.setLastName(sc.next());
 					System.out.print("Enter phone number : ");
-					c.setPhone(sc.nextInt());
+					int phone = sc.nextInt();
+					sc.nextLine();
+					c.setPhone(phone);
 					System.out.print("Enter address : ");
 					c.setAddress(sc.nextLine());
 					boolean status = customerService.udpateInfo(c);
