@@ -33,7 +33,7 @@ public class OrderDetailDaoImpl implements OrderDetailDao {
 	@Override
 	public OrderDetailDto getOrderDetailInfo(int orderDetailId) throws SQLException {
 		Connection con = DBConnection.dbConnect();
-		String sql = "select * from customers where CustomerID = ?";
+		String sql = "select * from products p join orderdetails od on od.productid=p.productid where orderDetailId = ?";
 		PreparedStatement pstmt = con.prepareStatement(sql);
 
 		pstmt.setInt(1, orderDetailId);

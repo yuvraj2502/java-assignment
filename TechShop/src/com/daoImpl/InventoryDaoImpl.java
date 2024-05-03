@@ -24,7 +24,7 @@ public class InventoryDaoImpl implements InventoryDao {
 
 		if (rst.next()) {
 			int prodId = rst.getInt("productid");
-			String name = rst.getString("name");
+			String name = rst.getString("productname");
 			String description = rst.getString("description");
 			double price = rst.getDouble("price");
 
@@ -39,13 +39,13 @@ public class InventoryDaoImpl implements InventoryDao {
 	@Override
 	public int getQuantityInStock(int inventoryId) throws SQLException {
 		Connection con = DBConnection.dbConnect();
-		String sql = "select quantity from inventory where inventoryid=?";
+		String sql = "select quantityinstock from inventory where inventoryid=?";
 		PreparedStatement pstmt = con.prepareStatement(sql);
 		pstmt.setInt(1, inventoryId);
 		ResultSet rst = pstmt.executeQuery();
 
 		if (rst.next()) {
-			int quantity = rst.getInt("quantity");
+			int quantity = rst.getInt("quantityinstock");
 			return quantity;
 		}
 
@@ -56,7 +56,7 @@ public class InventoryDaoImpl implements InventoryDao {
 	@Override
 	public boolean updateStockQuantity(int newQuantity, int productId) throws SQLException {
 		Connection con = DBConnection.dbConnect();
-		String sql = "update inventory set quantity=? inventoryid=?";
+		String sql = "update inventory set quantityinstock=? inventoryid=?";
 		PreparedStatement pstmt = con.prepareStatement(sql);
 
 		pstmt.setInt(1, newQuantity);
@@ -72,7 +72,7 @@ public class InventoryDaoImpl implements InventoryDao {
 	public List<Product> listLowStockProducts(int threshold) throws SQLException {
 		Connection con = DBConnection.dbConnect();
 		String sql = "select p.* from inventory i join products p on "
-				+ "p.productid = i.productid where i.quantityinstock < ?";
+				+ "p.productid = i.productid where i.quantityinstock >= ?";
 
 		PreparedStatement pstmt = con.prepareStatement(sql);
 		pstmt.setInt(1, threshold);
@@ -121,14 +121,14 @@ public class InventoryDaoImpl implements InventoryDao {
 	@Override
 	public double getInventoryValue(int productId) throws SQLException {
 		Connection con = DBConnection.dbConnect();
-		String sql = "select price*quantityinstock from inventory i join products p "
+		String sql = "select p.price*i.quantityinstock as total_value from inventory i join products p "
 				+ "on p.productid = i.productid where p.productid=?";
 		PreparedStatement pstmt = con.prepareStatement(sql);
 		pstmt.setInt(1, productId);
 		ResultSet rst = pstmt.executeQuery();
 
 		if (rst.next()) {
-			int totalValue = rst.getInt("quantity");
+			double totalValue = rst.getInt("total_value");
 			return totalValue;
 		}
 

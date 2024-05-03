@@ -242,17 +242,29 @@ public class MainController {
 					break;
 				}
 				case 16: {
-					int productId = 1;
-					List<Product> p = inventoryService.lowStockProduct(productId);
-					for (Product product : p)
-						System.out.println(product);
-					System.out.println();
+					System.out.println("Enter the threshold: ");
+					int threshold = sc.nextInt();
+					List<Product> p = inventoryService.lowStockProduct(threshold);
+					if(p.size()!=0)
+					{
+						for (Product product : p)
+							System.out.println(product);
+						System.out.println();
+					}else {
+						System.out.println("No product found");
+					}
 					break;
 				}
 				case 17: {
 					List<Product> p = inventoryService.outOfStockProduct();
-					for (Product product : p)
-						System.out.println(product);
+					if(p.size()!=0)
+					{
+						for (Product product : p)
+							System.out.println(product);
+					}
+					else {
+						System.out.println("No product Found");
+					}
 					System.out.println();
 					break;
 				}
